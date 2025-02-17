@@ -14,9 +14,10 @@ import (
 	"github.com/containerd/containerd/v2/pkg/namespaces"
 	"github.com/containerd/containerd/v2/pkg/oci"
 	"github.com/containerd/go-cni"
+	"github.com/opencontainers/runtime-spec/specs-go"
+
 	v1 "github.com/omalloc/container/api/v1"
 	"github.com/omalloc/container/pkg/idgen"
-	"github.com/opencontainers/runtime-spec/specs-go"
 )
 
 type Containerd struct {
@@ -24,7 +25,7 @@ type Containerd struct {
 }
 
 func New() (v1.Container, error) {
-	client, err := containerd.New("/run/containerd/containerd.sock")
+	client, err := containerd.New("/Users/sendya/.colima/default/containerd.sock")
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +36,7 @@ func New() (v1.Container, error) {
 		client: client,
 	}
 
-	if c.ping() != nil {
+	if err := c.ping(); err != nil {
 		return nil, err
 	}
 
